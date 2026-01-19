@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-4">Budget Summary</h1>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {% for category in categories %}
+    <div class="bg-white p-4 rounded shadow relative">
+        {% if category.name != "Other" %}
+        <div class="absolute top-2 right-2">
+            <form action="/delete_category/{{ category.id }}" method="post">
+                <button type="submit" class="inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-2 py-1 text-xs font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+        {% endif %}
+        <h2 class="text-xl font-bold">{{ category.name }}</h2>
+        <p class="text-gray-600">Total: ${{ "%.2f"|format(category.total) }}</p>
+        <a href="/category/{{ category.id }}" class="mt-2 inline-block text-indigo-600 hover:text-indigo-800">View Transactions</a>
+    </div>
+    {% endfor %}
+</div>
+<a href="/add" class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded">Add Transaction</a>
+
+<h2 class="text-2xl font-bold mt-8 mb-4">Add Category</h2>
+<form action="/add_category" method="post" class="space-y-4">
+    <div>
+        <label for="category_name" class="block text-sm font-medium text-gray-700">Category Name</label>
+        <input type="text" name="category_name" id="category_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
+    </div>
+    <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add Category</button>
+</form>
+{% endblock %}
